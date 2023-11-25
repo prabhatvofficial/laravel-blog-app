@@ -19,7 +19,6 @@ class UserController extends Controller
     public function logout(){
         auth()->logout();
         return redirect('/')->with('success', 'Logged out successfully');
-
     }
 
     public function login(Request $request){
@@ -45,5 +44,9 @@ class UserController extends Controller
         $user = User::create($incomingFields);
         auth()->login($user);
         return redirect('/')->with('success', 'Thank you for registering!');
+    }
+
+    public function profile(User $user){
+        return view('profile-posts', ['name' => $user->name, 'posts' => $user->posts()->latest()->get(), 'postCount' => $user->posts()->count()]);
     }
 }
