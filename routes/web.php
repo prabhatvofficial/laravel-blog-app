@@ -15,6 +15,10 @@ use App\Http\Controllers\UserController;
 |
 */
 
+Route::get('admins-only', function(){
+    return "onl;yn admin";
+})->middleware('can:visitAdminPages');
+
 Route::get('/', [UserController::class, "showCorrectHomepage"])->name('login');
 Route::post('/register', [UserController::class, "register"])->middleware('guest');
 Route::post('/login', [UserController::class, "login"])->middleware('guest');
@@ -23,6 +27,9 @@ Route::post('/logout', [UserController::class, "logout"])->middleware('auth');
 Route::get('/create-post', [PostController::class, "showCreateForm"])->middleware('auth');
 Route::post('/create-post', [PostController::class, "storeNewPost"])->middleware('auth');
 Route::get('/post/{post}', [PostController::class, "showSinglePost"]);
-Route::delete('/post/{post}', [PostController::class, "delete"])->middleware('can:delete,post');
+Route::get('/post/{post}/edit', [PostController::class, "showUpdateForm"])->middleware('can:delete,post');
+Route::put('/post/{post}/edit', [PostController::class, "actuallyUpdate"])->middleware('can:delete,post');
 
 Route::get('/profile/{user:username}', [UserController::class, "profile"]);
+Route::get('/manage-avatar', [UserController::class, "showAvatarForm"])->middleware('auth');
+Route::post('/manage-avatar', [UserController::class, "storeAvatar"])->middleware('auth');

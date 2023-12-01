@@ -28,7 +28,19 @@ class PostController extends Controller
         $post['body'] = $ourHtml;
         return view('single-post', ['post' => $post]);
     }
-
+    public function showUpdateForm(Post $post){
+        return view('edit-post', ['post' => $post]);
+    }
+    public function actuallyUpdate(Post $post, Request $request){
+        $incomingFields = $request->validate([
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+        $incomingFields['title'] = strip_tags($incomingFields['title']);
+        $incomingFields['body'] = strip_tags($incomingFields['body']);
+        $post->update($incomingFields);
+        return back()->with('success', 'Post updated successfully');
+    }
     public function delete(Post $post){
         // if(auth()->user()->cannot('delete', $post)){
         //     return 'You can not delete this post';
