@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FollowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,5 +32,12 @@ Route::get('/post/{post}/edit', [PostController::class, "showUpdateForm"])->midd
 Route::put('/post/{post}/edit', [PostController::class, "actuallyUpdate"])->middleware('can:delete,post');
 
 Route::get('/profile/{user:username}', [UserController::class, "profile"]);
+Route::get('/profile/{user:username}/followers', [UserController::class, "profileFollowers"]);
+Route::get('/profile/{user:username}/following', [UserController::class, "profileFollowing"]);
 Route::get('/manage-avatar', [UserController::class, "showAvatarForm"])->middleware('auth');
 Route::post('/manage-avatar', [UserController::class, "storeAvatar"])->middleware('auth');
+
+//follow
+
+Route::post('/create-follow/{user:username}', [FollowController::class, 'createFollow'])->middleware('auth');
+Route::post('/remove-follow/{user:username}', [FollowController::class, 'removeFollow'])->middleware('auth');
