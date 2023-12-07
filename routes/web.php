@@ -30,6 +30,7 @@ Route::post('/create-post', [PostController::class, "storeNewPost"])->middleware
 Route::get('/post/{post}', [PostController::class, "showSinglePost"]);
 Route::get('/post/{post}/edit', [PostController::class, "showUpdateForm"])->middleware('can:delete,post');
 Route::put('/post/{post}/edit', [PostController::class, "actuallyUpdate"])->middleware('can:delete,post');
+Route::get('/search/{term}', [PostController::class, "search"]);
 
 Route::get('/profile/{user:username}', [UserController::class, "profile"]);
 Route::get('/profile/{user:username}/followers', [UserController::class, "profileFollowers"]);
